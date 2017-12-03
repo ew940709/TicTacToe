@@ -9,6 +9,7 @@ public class Model {
     private char playerToMove;
     private boolean gameIsComplete;
     private char gameWinner;
+    private int moveCount;
 
 
     public Model(){
@@ -26,6 +27,7 @@ public class Model {
         playerToMove = 'x';  // x always first
         gameIsComplete = false;
         gameWinner= ' ';
+        moveCount = 0;
         resetGameBoard();
     }
 
@@ -46,7 +48,10 @@ public class Model {
         else if ( playerToMove == 'o' )
             playerToMove = 'x';
 
-       //TODO Check if it is the end of the game
+        ++moveCount;
+        if ( rowWins() || colWins() || diagWins() ) gameIsComplete = true;
+        if ( moveCount == 400) gameIsComplete = true;
+
     }
 
     // Sets the game board to its default empty state.
@@ -58,4 +63,106 @@ public class Model {
             }
         }
     }
+
+
+    // Returns true if a winning row is found.
+    // Sets the winner and the win path.
+    private boolean rowWins()
+    {
+        for ( int i = 0; i < 20; i++ ) {
+            char rowsOfSymbol = ' ';
+            int count = 0;
+            for ( int j = 0; j < 20; j++ ) {
+
+                if(gameBoard[i][j] != ' '){
+                    rowsOfSymbol = gameBoard[i][j];
+                    count = 1;
+                    for(int k = 1; k < 5; k++){
+                        if(j+k < 20 && gameBoard[i][j+k] == rowsOfSymbol){
+                            count++;
+                        }
+                        else{
+                            count = 0;
+                            break;
+                        }
+                    }
+
+                    if ( count ==  5) {
+                        if ( rowsOfSymbol == 'x' ) gameWinner = 'x';
+                        if ( rowsOfSymbol == 'o' ) gameWinner = 'o';
+                        return true;
+                    }
+                }
+
+            }
+
+
+        }
+        return false;
+    } // end rowWins()
+
+    // Returns true if a winning column is found.
+    // Sets the winner and the win path.
+    private boolean colWins()
+    {
+        for ( int i = 0; i < 20; i++ ) {
+            char rowsOfSymbol = ' ';
+            int count = 0;
+            for ( int j = 0; j < 20; j++ ) {
+                if(gameBoard[j][i] != ' '){
+                    rowsOfSymbol = gameBoard[j][i];
+                    count = 1;
+                    for(int k = 1; k < 5; k++){
+                        if(j+k < 20 && gameBoard[j+k][i] == rowsOfSymbol){
+                            count++;
+                        } else{
+                            count = 0;
+                            break;
+                        }
+                    }
+
+                    if ( count ==  5) {
+                        if ( rowsOfSymbol == 'x' ) gameWinner = 'x';
+                        if ( rowsOfSymbol == 'o' ) gameWinner = 'o';
+                        return true;
+                    }
+                }
+            }
+
+        }
+        return false;
+    } // end colWins()
+
+    // Returns true if a winning diagonal is found.
+    // Sets the winner and the win path.
+    private boolean diagWins()
+    {
+        for ( int i = 0; i < 20; i++ ) {
+            char rowsOfSymbol = ' ';
+            int count = 0;
+            for (int j = 0; j < 20; j++) {
+                if (gameBoard[i][j] != ' ') {
+                    rowsOfSymbol = gameBoard[i][j];
+                    count = 1;
+                    for (int k = 1; k < 5; k++) {
+                        if (i + k < 20 && j + k < 20 && gameBoard[i+k][j+k] == rowsOfSymbol) {
+                            count++;
+                        } else {
+                            count = 0;
+                            break;
+                        }
+                    }
+
+                    if (count == 5) {
+                        if (rowsOfSymbol == 'x') gameWinner = 'x';
+                        if (rowsOfSymbol == 'o') gameWinner = 'o';
+                        return true;
+                    }
+                }
+            }
+
+        }
+
+            return false;
+    } // end diagWins()
 }
