@@ -58,4 +58,9 @@ public class PrologAI {
         query.allSolutions();
         // assertz(...)
     }
+
+    public void startNewGame(){
+        Query query = new Query("start_new_game");
+        query.allSolutions();
+    }
 }

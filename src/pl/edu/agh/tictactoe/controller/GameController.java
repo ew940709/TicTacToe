@@ -167,6 +167,7 @@ public class GameController {
         public void actionPerformed( ActionEvent e )
         {
             model.startNewGame();                            // reset model
+            computerModel.startNewGame();
             view.updateGameBoardUI( model.getGameBoard() );  // reset view gameboard
             view.updateGameStatusLabelText( STATUS_START );  // reset view game status label
         }

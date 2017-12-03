@@ -79,3 +79,5 @@ next_move((0, 0)).
 
 remember_enemy(Position) :- assertz(xenemy(Position)).
 remember_self(Position) :- assertz(xself(Position)).
+
+start_new_game :- retractall(xself(_)), retractall(xenemy(_)).
