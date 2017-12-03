@@ -3,8 +3,8 @@
     xenemy/1.
 
 
-self((X,Y)) :- xself((X,Y)), !.
-enemy((X,Y)) :- xenemy((X,Y)), !.
+self(Position) :- xself(Position).
+enemy(Position) :- xenemy(Position).
 
 neighbour((X, Y), Candidate) :-
     Right is X + 1,

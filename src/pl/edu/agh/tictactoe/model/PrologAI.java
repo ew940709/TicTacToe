@@ -31,7 +31,7 @@ public class PrologAI {
     }
 
     private void loadProgram() {
-       // String path = getClass().getClassLoader().getResource(PROGRAM_FILE).getFile().substring(1);
+//        String path = getClass().getClassLoader().getResource(PROGRAM_FILE).getFile().substring(1);
         String path = "D:\\Semestr 9\\Ekspertowe\\TicTacToe\\resources\\tictactoe.pl";
         Query loadProgramQuery = new Query("consult", new Term[] {new Atom(path)});
         loadProgramQuery.allSolutions();
@@ -48,19 +48,14 @@ public class PrologAI {
     }
 
     public void addPlayerField(Point point) {
-        Query query = new Query("remember_enemy(("+point.getX()+","+point.getY()+"))");
-        query.allSolutions();
-        // assertz(...)
+        new Query("remember_enemy(("+point.getX()+","+point.getY()+"))").allSolutions();
     }
 
     public void addAIField(Point point) {
-        Query query = new Query("remember_self(("+point.getX()+","+ point.getY()+"))");
-        query.allSolutions();
-        // assertz(...)
+        new Query("remember_self(("+point.getX()+","+ point.getY()+"))").allSolutions();
     }
 
     public void startNewGame(){
-        Query query = new Query("start_new_game");
-        query.allSolutions();
+        new Query("start_new_game").allSolutions();
     }
 }
