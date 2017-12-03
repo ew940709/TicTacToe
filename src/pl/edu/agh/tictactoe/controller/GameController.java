@@ -2,6 +2,7 @@ package pl.edu.agh.tictactoe.controller;
 
 import pl.edu.agh.tictactoe.gui.Gui;
 import pl.edu.agh.tictactoe.model.Model;
+import pl.edu.agh.tictactoe.model.PrologAI;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -34,6 +35,7 @@ public class GameController {
 
     private Gui view;
     private Model model;
+    private PrologAI computerModel;
 
     // Tic Tac Toe controller constructor.
     // Provides controller with access to the model & view and adds view event listeners.
@@ -41,6 +43,7 @@ public class GameController {
     {
         this.view = view;
         this.model = model;
+        this.computerModel = new PrologAI();
 
         this.view.addGameBoardSquareButtonListener( new SquareListener() );
         this.view.addGameBoardSquareButtonHoverListener( new SquareHoverListener() );
@@ -73,11 +76,12 @@ public class GameController {
 
                 // Tell model to make the move since the square is empty.
                 model.makeMoveInSquare( row, col );
+                computerModel.addPlayerField(new PrologAI.Point(row, col));
 
                 if ( model.getPlayerToMove() == 'x' ) {
                     gameStatus = STATUS_X_MOVES;
                 } else {
-                    gameStatus = STATUS_O_MOVES;
+                    gameStatus = STATUS_CP_MOVES;
                 }
 
                 // Ask model if game is complete so we can update the game status for that scenario.
@@ -91,10 +95,44 @@ public class GameController {
                 view.updateGameStatusLabelText( gameStatus );
                 view.updateGameBoardUI( model.getGameBoard() );
 
+                // Automatically initiate the next move if we are in computer mode.
+                if ( !model.gameIsComplete() && model.getPlayerToMove() == 'o')
+                    computerMove();
+
             } // end if (!blockMove)
         } // end SquareListener actionPerformed
 
+        private void computerMove(){
+
+            blockMove = true;  // block user moves during computer move
+            PrologAI.Point move = computerModel.nextMove();
+            computerModel.addAIField(move);
+            // Tell model to make the move since the square is empty.
+            model.makeMoveInSquare( move.getX(), move.getY() );
+
+
+            // Delay move from displaying to make game more natural.
+            java.util.Timer timer = new java.util.Timer();
+            timer.schedule( new java.util.TimerTask() {
+                @Override
+                public void run() {
+                    String gameStatus;
+                    gameStatus = STATUS_X_MOVES;
+                    if ( model.gameIsComplete() ) {
+                        if ( model.getGameWinner() == ' ' ) gameStatus = STATUS_CATS;
+                        if ( model.getGameWinner() == 'o' ) gameStatus = STATUS_O_WINS;
+                    }
+                    view.updateGameStatusLabelText( gameStatus );
+                    view.updateGameBoardUI( model.getGameBoard() );
+                    blockMove = false; // remove block
+                }
+            }, 750 );
+        }
+
     } // end class SquareListener
+
+
+
 
     // Class SquareHoverListener
     // Controls game board square hover state. Hover states are prevented if

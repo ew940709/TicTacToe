@@ -1,9 +1,10 @@
-self((0, 0)).  self((1, 0)).  self((2, 0)). self((3, 0)).
-               enemy((1, 1)).
-enemy((0, 2)). enemy((1, 2)).
-               enemy((1, 3)).
-               enemy((1, 4)).
-               enemy((1, 5)).
+:- dynamic
+    xself/1,
+    xenemy/1.
+
+
+self((X,Y)) :- xself((X,Y)), !.
+enemy((X,Y)) :- xenemy((X,Y)), !.
 
 neighbour((X, Y), Candidate) :-
     Right is X + 1,
@@ -75,3 +76,6 @@ next_move(Position) :- can_extend_line_of_length(self, Position, 2), !.
 next_move(Position) :- can_extend_line_of_length(self, Position, 1), !.
 next_move(Position) :- can_extend_line_of_length(enemy, Position, 1), !.
 next_move((0, 0)).
+
+remember_enemy(Position) :- assertz(xenemy(Position)).
+remember_self(Position) :- assertz(xself(Position)).
