@@ -64,8 +64,8 @@ public class GameController {
             if ( !blockMove ) {
                 String gameStatus;  // string will store game status to update view label.
                 JButton square = (JButton) e.getSource();
-                int row = (int) square.getClientProperty("row");  // store square identifiers
-                int col = (int) square.getClientProperty("col");  // to pass to model
+                int row = (Integer) square.getClientProperty("row");  // store square identifiers
+                int col = (Integer) square.getClientProperty("col");  // to pass to model
 
                 // Prevent square interaction if game is complete or square has been played.
                 if ( model.gameIsComplete() ) return;
@@ -104,8 +104,8 @@ public class GameController {
         @Override
         public void mouseEntered( MouseEvent e ) {
             JButton square = (JButton) e.getSource();
-            int row = (int) square.getClientProperty("row");
-            int col = (int) square.getClientProperty("col");
+            int row = (Integer) square.getClientProperty("row");
+            int col = (Integer) square.getClientProperty("col");
             if ( !model.gameIsComplete() && !model.squareHasBeenPlayed(row, col) ) {
                 view.updateSquareUIForHoverState( row, col );
             }
@@ -114,8 +114,8 @@ public class GameController {
         @Override
         public void mouseExited( MouseEvent e ) {
             JButton square = (JButton) e.getSource();
-            int row = (int) square.getClientProperty("row");
-            int col = (int) square.getClientProperty("col");
+            int row = (Integer) square.getClientProperty("row");
+            int col = (Integer) square.getClientProperty("col");
             view.updateSquareUIForNormalState( row, col );
         }
 

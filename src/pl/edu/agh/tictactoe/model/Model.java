@@ -32,7 +32,7 @@ public class Model {
     // Returns true if a square is already played.
     public boolean squareHasBeenPlayed( int row, int col )
     {
-        return gameBoard[row][col] != 'x' && gameBoard[row][col] != 'o' ? false : true;
+        return gameBoard[row][col] == 'x' || gameBoard[row][col] == 'o';
     }
 
 
